@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'elk::default' do
+describe 'sample-app::default' do
   let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0').converge(described_recipe) }
 
   xit 'includes needed recipes' do
