@@ -1,3 +1,3 @@
 source 'https://supermarket.chef.io'
 
-cookbook 'elk', path: './cookbooks/elk'
+cookbook 'sample-app', path: './cookbooks/sample-app'
