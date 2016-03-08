@@ -24,6 +24,10 @@ Vagrant.configure('2') do |config|
       vb.memory = 1024
     end
 
+    config.vm.provider "libvirt" do |dm, override|
+      dm.memory = 1024
+    end
+
     dev.vm.provision :chef_zero, install: true do |chef|
       chef.verbose_logging
       chef.nodes_path = 'cookbooks'
