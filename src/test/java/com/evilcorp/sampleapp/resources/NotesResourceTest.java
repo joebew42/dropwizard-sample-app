@@ -18,8 +18,8 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NotesResourceTest {
-    public static final Integer ID_ONE = 1;
-    public static final Integer ID_TWO = 2;
+    public static final Integer AN_ID = 1;
+    public static final Integer ANOTHER_ID = 2;
     public static final String A_MESSAGE = "This is a new note";
 
     @Mock
@@ -35,18 +35,17 @@ public class NotesResourceTest {
     @Test
     public void
     returns_an_existing_note() {
-        when(repository.findBy(ID_ONE)).thenReturn(aNoteWith(ID_ONE));
+        when(repository.findBy(AN_ID)).thenReturn(aNoteWith(AN_ID));
 
-        Response response = resource.get(ID_ONE);
+        Response response = resource.get(AN_ID);
 
-
-        assertEquals(response.getEntity(), aNoteWith(ID_ONE));
+        assertEquals(response.getEntity(), aNoteWith(AN_ID));
     }
 
     @Test
     public void
     returns_the_list_of_all_notes() {
-        List<Note> expectedNotes = asList(aNoteWith(ID_ONE), aNoteWith(ID_TWO));
+        List<Note> expectedNotes = asList(aNoteWith(AN_ID), aNoteWith(ANOTHER_ID));
         when(repository.findAll()).thenReturn(expectedNotes);
 
         Response response = resource.get();
@@ -58,7 +57,7 @@ public class NotesResourceTest {
     public void
     when_create_a_new_note_it_returns_the_newly_created_one() {
         Note noteToBeCreated = aNoteWith(A_MESSAGE);
-        Note createdNote = aNoteWith(ID_ONE, noteToBeCreated.getMessage());
+        Note createdNote = aNoteWith(AN_ID, noteToBeCreated.getMessage());
         when(repository.create(noteToBeCreated)).thenReturn(createdNote);
 
         Response response = resource.post(A_MESSAGE);
