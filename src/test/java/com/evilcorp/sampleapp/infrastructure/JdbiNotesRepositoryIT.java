@@ -1,6 +1,5 @@
 package com.evilcorp.sampleapp.infrastructure;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import com.evilcorp.sampleapp.SampleAppApplication;
 import com.evilcorp.sampleapp.SampleAppConfiguration;
 import com.evilcorp.sampleapp.models.Note;
@@ -14,7 +13,7 @@ import org.junit.ClassRule;
 import org.junit.Test;
 
 import static io.dropwizard.testing.ResourceHelpers.resourceFilePath;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class JdbiNotesRepositoryIT {
 
