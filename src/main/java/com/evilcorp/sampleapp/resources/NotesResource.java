@@ -16,7 +16,7 @@ import static javax.ws.rs.core.Response.Status.OK;
 @Path("/notes")
 @Produces(APPLICATION_JSON)
 public class NotesResource {
-    private NotesRepository repository;
+    private final NotesRepository repository;
 
     public NotesResource(NotesRepository repository) {
         this.repository = repository;
