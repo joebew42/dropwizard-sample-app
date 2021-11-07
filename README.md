@@ -9,7 +9,7 @@ Requirements to run this app:
 
 ## How to run unit tests
 
-```
+```sh
 mvn test
 ```
 
@@ -17,21 +17,21 @@ mvn test
 
 MySQL database setup (with Docker):
 
-```
-docker run --name=test_db -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql
-docker exec test_db mysql -u root -proot -e "create database db_notes_test;"
+```sh
+docker-compose up -d
+docker exec -it dropwizard-sample-app_db_1 mysql -u root -proot -e "create database db_notes_test;"
 ```
 
 Run migrations:
 
-```
+```sh
 mvn package
 java -jar target/sample-app-1.0-SNAPSHOT.jar db migrate src/test/resources/configuration-integration-test.yml
 ```
 
 Run integration-test:
 
-```
+```sh
 mvn failsafe:integration-test
 ```
 
@@ -39,33 +39,33 @@ mvn failsafe:integration-test
 
 Create the package
 
-```
+```sh
 mvn package
 ```
 
 MySQL database setup (with Docker):
 
-```
-docker run --name=app_db -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql
-docker exec app_db mysql -u root -proot -e "create database db_notes;"
+```sh
+docker-compose up -d
+docker exec -it dropwizard-sample-app_db_1 mysql -u root -proot -e "create database db_notes;"
 ```
 
 Run migrations:
 
-```
+```sh
 mvn package
 java -jar target/sample-app-1.0-SNAPSHOT.jar db migrate configuration.yml
 ```
 
 Run application:
 
-```
+```sh
 java -jar target/sample-app-1.0-SNAPSHOT.jar server configuration.yml
 ```
 
 ## Do some calls
 
-```
+```sh
 curl -X POST http://localhost:8080/notes --data "Hello world"
 curl -X POST http://localhost:8080/notes --data "This is a sample application"
 curl http://127.0.0.1:8080/notes/
@@ -83,7 +83,7 @@ Vagrant plugins:
 * vagrant-cachier
 * vagrant-omnibus
 
-```
+```sh
 vagrant up
 ```
 
@@ -93,19 +93,19 @@ Requirements:
 
 * Chef-dk 0.10.0
 
-```
+```sh
 cd cookbooks/sample-app
 ```
 
 Run unit tests
 
-```
+```sh
 chef exec rspec
 ```
 
 Run integration test
 
-```
+```sh
 kitchen create
 kitchen converge
 kitchen verify
@@ -114,6 +114,6 @@ kitchen destroy
 
 Abbrv.
 
-```
+```sh
 kitchen test
 ```
