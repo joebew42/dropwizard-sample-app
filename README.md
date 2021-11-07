@@ -4,8 +4,8 @@ A sample application built with [Dropwizard.io](http://dropwizard.io)
 
 Requirements to run this app:
 
-* Java 7
-* Maven 3.2.x
+* Java 11
+* Maven 3.6.x
 
 ## How to run unit tests
 
