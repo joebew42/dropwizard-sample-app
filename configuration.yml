@@ -1,7 +1,7 @@
 applicationName: Sample App
 
 database:
-  driverClass: com.mysql.jdbc.Driver
+  driverClass: com.mysql.cj.jdbc.Driver
   user: root
   password: root
   url: jdbc:mysql://127.0.0.1:3306/db_notes

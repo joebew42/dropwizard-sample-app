@@ -2,13 +2,13 @@ package com.evilcorp.sampleapp.infrastructure;
 
 import com.evilcorp.sampleapp.models.Note;
 import com.evilcorp.sampleapp.models.NotesRepository;
-import org.skife.jdbi.v2.DBI;
-import org.skife.jdbi.v2.StatementContext;
-import org.skife.jdbi.v2.sqlobject.Bind;
-import org.skife.jdbi.v2.sqlobject.SqlQuery;
-import org.skife.jdbi.v2.sqlobject.SqlUpdate;
-import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
-import org.skife.jdbi.v2.tweak.ResultSetMapper;
+import org.jdbi.v3.core.Jdbi;
+import org.jdbi.v3.core.mapper.RowMapper;
+import org.jdbi.v3.core.statement.StatementContext;
+import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
+import org.jdbi.v3.sqlobject.customizer.Bind;
+import org.jdbi.v3.sqlobject.statement.SqlQuery;
+import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,7 +18,8 @@ public class JdbiNotesRepository implements NotesRepository {
 
     private final NoteDAO notes;
 
-    public JdbiNotesRepository(DBI jdbi) {
+    public JdbiNotesRepository(Jdbi jdbi) {
+        jdbi.registerRowMapper(new NoteMapper());
         notes = jdbi.onDemand(NoteDAO.class);
     }
 
@@ -41,7 +42,6 @@ public class JdbiNotesRepository implements NotesRepository {
         return note;
     }
 
-    @RegisterMapper(NoteMapper.class)
     private interface NoteDAO {
         @SqlUpdate("INSERT INTO notes(message) VALUES(:message)")
         void create(@Bind("message") String message);
@@ -56,8 +56,9 @@ public class JdbiNotesRepository implements NotesRepository {
         Integer lastId();
     }
 
-    public static class NoteMapper implements ResultSetMapper<Note> {
-        public Note map(int i, ResultSet rs, StatementContext statementContext) throws SQLException {
+    static class NoteMapper implements RowMapper<Note> {
+        @Override
+        public Note map(ResultSet rs, StatementContext ctx) throws SQLException {
             return Note.builder()
                     .withId(rs.getInt("id"))
                     .withMessage(rs.getString("message"))

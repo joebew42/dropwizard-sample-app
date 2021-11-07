@@ -6,11 +6,11 @@ import com.evilcorp.sampleapp.models.NotesRepository;
 import com.evilcorp.sampleapp.resources.NotesResource;
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
-import io.dropwizard.jdbi.DBIFactory;
+import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import org.skife.jdbi.v2.DBI;
+import org.jdbi.v3.core.Jdbi;
 
 public class SampleAppApplication extends Application<SampleAppConfiguration> {
     public static void main(String[] args) throws Exception {
@@ -18,7 +18,7 @@ public class SampleAppApplication extends Application<SampleAppConfiguration> {
     }
 
     @Override
-    public void run(SampleAppConfiguration configuration, Environment environment) throws Exception {
+    public void run(SampleAppConfiguration configuration, Environment environment) {
         NotesRepository repository = createNotesRepositoryFrom(configuration, environment);
 
         final NotesResource notes = new NotesResource(repository);
@@ -28,7 +28,7 @@ public class SampleAppApplication extends Application<SampleAppConfiguration> {
 
     @Override
     public void initialize(Bootstrap<SampleAppConfiguration> bootstrap) {
-        bootstrap.addBundle(new MigrationsBundle<SampleAppConfiguration>() {
+        bootstrap.addBundle(new MigrationsBundle<>() {
             public DataSourceFactory getDataSourceFactory(SampleAppConfiguration configuration) {
                 return configuration.getDataSourceFactory();
             }
@@ -37,7 +37,8 @@ public class SampleAppApplication extends Application<SampleAppConfiguration> {
 
     private NotesRepository createNotesRepositoryFrom(SampleAppConfiguration configuration, Environment environment) {
         if (configuration.getDataSourceFactory() != null) {
-            final DBI jdbi = new DBIFactory().build(environment, configuration.getDataSourceFactory(), "database");
+            JdbiFactory jdbiFactory = new JdbiFactory();
+            final Jdbi jdbi = jdbiFactory.build(environment, configuration.getDataSourceFactory(), "database");
             return new JdbiNotesRepository(jdbi);
         }
 

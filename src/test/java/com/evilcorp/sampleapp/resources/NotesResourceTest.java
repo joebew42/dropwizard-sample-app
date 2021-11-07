@@ -13,7 +13,6 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static javax.ws.rs.core.Response.Status.CREATED;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -40,7 +39,8 @@ public class NotesResourceTest {
 
         Response response = resource.get(ID_ONE);
 
-        assertThat(response.getEntity()).isEqualTo(aNoteWith(ID_ONE));
+
+        assertEquals(response.getEntity(), aNoteWith(ID_ONE));
     }
 
     @Test
@@ -61,8 +61,8 @@ public class NotesResourceTest {
 
         Response response = resource.post(A_MESSAGE);
 
-        assertThat(response.getStatusInfo()).isEqualTo(CREATED);
-        assertThat(response.getEntity()).isEqualTo(aNoteWith(ID_ONE, A_MESSAGE));
+        assertEquals(response.getStatusInfo(), CREATED);
+        assertEquals(response.getEntity(), aNoteWith(ID_ONE, A_MESSAGE));
     }
 
     private Note aNoteWith(Integer id, String message) {
