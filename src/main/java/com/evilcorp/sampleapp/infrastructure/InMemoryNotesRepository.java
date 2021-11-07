@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class InMemoryNotesRepository implements NotesRepository {
 
@@ -17,7 +18,10 @@ public class InMemoryNotesRepository implements NotesRepository {
     }
 
     public List<Note> findAll() {
-        return new ArrayList<Note>(notes.values());
+        return new ArrayList<>(notes.values())
+                .stream()
+                .sorted((note, otherNote) -> note.getId() > otherNote.getId() ? -1 : 1)
+                .collect(Collectors.toList());
     }
 
     public Note create(Note note) {

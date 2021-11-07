@@ -4,24 +4,24 @@ import com.evilcorp.sampleapp.models.Note;
 import com.evilcorp.sampleapp.models.NotesRepository;
 import org.junit.Test;
 
-import static java.lang.Integer.valueOf;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
 public class InMemoryNotesRepositoryIT {
     @Test public void
-    it_creates_find_and_find_all_notes() throws Exception {
+    it_creates_find_and_find_all_notes() {
         NotesRepository repository = new InMemoryNotesRepository();
 
-        Note note = repository.create(Note.builder().withMessage("First note").build());
+        Note firstNote = repository.create(aNoteWith("First note"));
+        Note lastNote = repository.create(aNoteWith("Another note"));
 
-        assertEquals(valueOf(1), note.getId());
-        assertEquals("First note", note.getMessage());
+        assertEquals(firstNote, repository.findBy(firstNote.getId()));
+        assertEquals(lastNote, repository.findBy(lastNote.getId()));
 
-        assertEquals(note, repository.findBy(1));
+        assertEquals(asList(lastNote, firstNote), repository.findAll());
+    }
 
-        Note secondNote = repository.create(Note.builder().withMessage("Another note").build());
-
-        assertEquals(asList(note, secondNote), repository.findAll());
+    private Note aNoteWith(String message) {
+        return Note.builder().withMessage(message).build();
     }
 }
