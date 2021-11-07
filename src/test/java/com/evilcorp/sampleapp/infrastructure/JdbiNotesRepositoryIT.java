@@ -1,5 +1,6 @@
 package com.evilcorp.sampleapp.infrastructure;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.evilcorp.sampleapp.SampleAppApplication;
 import com.evilcorp.sampleapp.SampleAppConfiguration;
 import com.evilcorp.sampleapp.models.Note;
@@ -19,25 +20,22 @@ public class JdbiNotesRepositoryIT {
 
     @ClassRule
     public static final DropwizardAppRule<SampleAppConfiguration> RULE =
-            new DropwizardAppRule<SampleAppConfiguration>(SampleAppApplication.class, resourceFilePath("configuration-integration-test.yml"));
+            new DropwizardAppRule<>(SampleAppApplication.class, resourceFilePath("configuration-integration-test.yml"));
 
     @Test public void
     it_creates_find_and_find_all_notes() {
-        Environment environment = RULE.getEnvironment();
-        PooledDataSourceFactory dataSourceFactory = RULE.getConfiguration().getDataSourceFactory();
-
-        final Jdbi jdbi = new JdbiFactory().build(environment, dataSourceFactory, "mysql");
-
-        NotesRepository repository = new JdbiNotesRepository(jdbi);
+        NotesRepository repository = new JdbiNotesRepository(buildJdbi());
 
         Note note = repository.create(aNoteWith("First note"));
 
-        assertNotNull(note.getId());
-        assertEquals("First note", note.getMessage());
-
         assertEquals(note, repository.findBy(note.getId()));
+    }
 
-        assertTrue(repository.findAll().size() >= 2);
+    private Jdbi buildJdbi() {
+        Environment environment = RULE.getEnvironment();
+        PooledDataSourceFactory dataSourceFactory = RULE.getConfiguration().getDataSourceFactory();
+
+        return new JdbiFactory().build(environment, dataSourceFactory, "mysql");
     }
 
     private Note aNoteWith(String aMessage) {

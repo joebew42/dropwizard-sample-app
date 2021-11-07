@@ -4,6 +4,7 @@ import com.evilcorp.sampleapp.models.Note;
 import com.evilcorp.sampleapp.models.NotesRepository;
 import org.junit.Test;
 
+import static java.lang.Integer.valueOf;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
@@ -14,7 +15,7 @@ public class InMemoryNotesRepositoryIT {
 
         Note note = repository.create(Note.builder().withMessage("First note").build());
 
-        assertEquals(new Integer(1), note.getId());
+        assertEquals(valueOf(1), note.getId());
         assertEquals("First note", note.getMessage());
 
         assertEquals(note, repository.findBy(1));
