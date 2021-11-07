@@ -35,7 +35,7 @@ public class NotesResourceTest {
 
     @Test
     public void
-    returns_an_existing_note() throws Exception {
+    returns_an_existing_note() {
         when(repository.findBy(ID_ONE)).thenReturn(aNoteWith(ID_ONE));
 
         Response response = resource.get(ID_ONE);
@@ -45,7 +45,7 @@ public class NotesResourceTest {
 
     @Test
     public void
-    returns_the_list_of_all_notes() throws Exception {
+    returns_the_list_of_all_notes() {
         List<Note> expectedNotes = asList(aNoteWith(ID_ONE), aNoteWith(ID_TWO));
         when(repository.findAll()).thenReturn(expectedNotes);
 
@@ -56,7 +56,7 @@ public class NotesResourceTest {
 
     @Test
     public void
-    when_create_a_new_note_it_returns_the_newly_created_one() throws Exception {
+    when_create_a_new_note_it_returns_the_newly_created_one() {
         when(repository.create(A_MESSAGE)).thenReturn(aNoteWith(ID_ONE, A_MESSAGE));
 
         Response response = resource.post(A_MESSAGE);
