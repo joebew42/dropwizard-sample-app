@@ -12,14 +12,14 @@ public class InMemoryNotesRepositoryIT {
     it_creates_find_and_find_all_notes() throws Exception {
         NotesRepository repository = new InMemoryNotesRepository();
 
-        Note note = repository.create("First note");
+        Note note = repository.create(Note.builder().withMessage("First note").build());
 
         assertEquals(new Integer(1), note.getId());
         assertEquals("First note", note.getMessage());
 
         assertEquals(note, repository.findBy(1));
 
-        Note secondNote = repository.create("Another note");
+        Note secondNote = repository.create(Note.builder().withMessage("Another note").build());
 
         assertEquals(asList(note, secondNote), repository.findAll());
     }

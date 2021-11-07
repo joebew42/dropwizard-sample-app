@@ -20,9 +20,7 @@ public class InMemoryNotesRepository implements NotesRepository {
         return new ArrayList<Note>(notes.values());
     }
 
-    public Note create(String message) {
-        Note note = Note.builder().withMessage(message).build();
-
+    public Note create(Note note) {
         synchronized (notes) {
             note.setId(notes.size() + 1);
             notes.put(note.getId(), note);

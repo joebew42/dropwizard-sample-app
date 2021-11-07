@@ -7,5 +7,5 @@ public interface NotesRepository {
 
     List<Note> findAll();
 
-    Note create(String message);
+    Note create(Note note);
 }

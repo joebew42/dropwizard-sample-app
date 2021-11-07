@@ -5,7 +5,6 @@ import com.evilcorp.sampleapp.models.NotesRepository;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
-import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
@@ -31,9 +30,7 @@ public class JdbiNotesRepository implements NotesRepository {
         return notes.findAll();
     }
 
-    public Note create(String message) {
-        Note note = Note.builder().withMessage(message).build();
-
+    public Note create(Note note) {
         synchronized (notes) {
             notes.create(note.getMessage());
             note.setId(notes.lastId());

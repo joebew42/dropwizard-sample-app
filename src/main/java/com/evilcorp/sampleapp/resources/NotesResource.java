@@ -44,7 +44,7 @@ public class NotesResource {
     @Path("/")
     @Timed
     public Response post(String message) {
-        Note note = repository.create(message);
+        Note note = repository.create(Note.builder().withMessage(message).build());
 
         return Response.status(CREATED).entity(note).build();
     }

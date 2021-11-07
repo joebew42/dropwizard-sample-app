@@ -30,15 +30,17 @@ public class JdbiNotesRepositoryIT {
 
         NotesRepository repository = new JdbiNotesRepository(jdbi);
 
-        Note note = repository.create("First note");
+        Note note = repository.create(aNoteWith("First note"));
 
         assertNotNull(note.getId());
         assertEquals("First note", note.getMessage());
 
         assertEquals(note, repository.findBy(note.getId()));
 
-        Note secondNote = repository.create("Another note");
-
         assertTrue(repository.findAll().size() >= 2);
+    }
+
+    private Note aNoteWith(String aMessage) {
+        return Note.builder().withMessage(aMessage).build();
     }
 }

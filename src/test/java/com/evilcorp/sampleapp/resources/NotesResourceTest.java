@@ -57,12 +57,18 @@ public class NotesResourceTest {
     @Test
     public void
     when_create_a_new_note_it_returns_the_newly_created_one() {
-        when(repository.create(A_MESSAGE)).thenReturn(aNoteWith(ID_ONE, A_MESSAGE));
+        Note noteToBeCreated = aNoteWith(A_MESSAGE);
+        Note createdNote = aNoteWith(ID_ONE, noteToBeCreated.getMessage());
+        when(repository.create(noteToBeCreated)).thenReturn(createdNote);
 
         Response response = resource.post(A_MESSAGE);
 
         assertEquals(response.getStatusInfo(), CREATED);
-        assertEquals(response.getEntity(), aNoteWith(ID_ONE, A_MESSAGE));
+        assertEquals(response.getEntity(), createdNote);
+    }
+
+    private Note aNoteWith(String message) {
+        return Note.builder().withMessage(message).build();
     }
 
     private Note aNoteWith(Integer id, String message) {
